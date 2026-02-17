@@ -6,7 +6,7 @@ A year-long creative experiment: start with a "useless" CSS 3D spinning circle a
 
 **Started:** 2026-02-17
 **Owner:** Tony
-**Repo:** (GitHub — push pending auth refresh)
+**Repo:** https://github.com/TangledScripts/spinner
 
 ## Daily Workflow
 
