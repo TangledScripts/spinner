@@ -1,0 +1,252 @@
+/* Register --spinner-color for smooth animated transitions */
+@property --spinner-color {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #42a5f5;
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #1a1a2e;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #e0e0e0;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* 3D Perspective Container */
+.scene {
+  perspective: 800px;
+  transform-style: preserve-3d;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The 3D Circle */
+.circle {
+  --spinner-color: #42a5f5;
+  --spin-duration: 2s;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--spinner-color) 0%, transparent 70%);
+  border: 3px solid var(--spinner-color);
+  box-shadow: 0 0 30px var(--spinner-color), inset 0 0 20px rgba(0, 0, 0, 0.3);
+  transform-style: preserve-3d;
+  transition: --spinner-color 0.4s ease;
+}
+
+/* Keyframe Animations */
+@keyframes spin-up {
+  from { transform: rotateX(0deg); }
+  to { transform: rotateX(360deg); }
+}
+
+@keyframes spin-down {
+  from { transform: rotateX(0deg); }
+  to { transform: rotateX(-360deg); }
+}
+
+@keyframes spin-left {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(-360deg); }
+}
+
+@keyframes spin-right {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+/* Animation Classes — use --spin-duration for speed control */
+.spin-up { animation: spin-up var(--spin-duration) linear infinite; }
+.spin-down { animation: spin-down var(--spin-duration) linear infinite; }
+.spin-left { animation: spin-left var(--spin-duration) linear infinite; }
+.spin-right { animation: spin-right var(--spin-duration) linear infinite; }
+
+/* Controls — cross pattern */
+.controls {
+  display: grid;
+  grid-template-areas:
+    ".    up   ."
+    "left .    right"
+    ".    down .";
+  grid-template-columns: repeat(3, 80px);
+  grid-template-rows: repeat(3, 50px);
+  gap: 0.5rem;
+  justify-items: center;
+  align-items: center;
+}
+
+.btn-up { grid-area: up; }
+.btn-left { grid-area: left; }
+.btn-right { grid-area: right; }
+.btn-down { grid-area: down; }
+
+/* Button Styling */
+.btn {
+  width: 70px;
+  padding: 0.5rem 0;
+  border: 2px solid #4a4a6a;
+  border-radius: 8px;
+  background-color: #16213e;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  text-align: center;
+}
+
+.btn:hover {
+  border-color: #7c7cff;
+  background-color: #1a1a3e;
+}
+
+.btn:focus,
+.btn:focus-visible {
+  outline: 2px solid #7c7cff;
+  outline-offset: 2px;
+}
+
+.btn.active {
+  border-color: var(--spinner-color, #42a5f5);
+  background-color: #1e2a4a;
+}
+
+/* Playback + Speed Controls */
+.playback {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.speed-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.speed-control label {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.speed-slider {
+  width: 200px;
+  accent-color: #7c7cff;
+  cursor: pointer;
+}
+
+/* Status HUD */
+.status-hud {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.75rem;
+  color: #666;
+  font-family: 'Courier New', monospace;
+}
+
+.status-hud .label {
+  color: #555;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+}
+
+.status-hud .value {
+  color: #aaa;
+}
+
+/* Animation play state — paused preserves rotation angle */
+.circle.paused {
+  animation-play-state: paused;
+}
+
+/* Keyboard hint */
+.keyboard-hint {
+  font-size: 0.7rem;
+  color: #444;
+  text-align: center;
+}
+
+.keyboard-hint kbd {
+  background: #2a2a4a;
+  border: 1px solid #3a3a5a;
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+  font-size: 0.7rem;
+  font-family: inherit;
+}
+
+/* Accessibility — respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .spin-up,
+  .spin-down,
+  .spin-left,
+  .spin-right {
+    animation: none;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .scene {
+    width: 220px;
+    height: 220px;
+  }
+
+  .circle {
+    width: 180px;
+    height: 180px;
+  }
+
+  .controls {
+    grid-template-columns: repeat(3, 70px);
+    grid-template-rows: repeat(3, 44px);
+  }
+
+  .btn {
+    width: 60px;
+    padding: 0.4rem 0;
+    font-size: 0.8rem;
+  }
+
+  .speed-slider {
+    width: 160px;
+  }
+
+  .status-hud {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .keyboard-hint {
+    display: none;
+  }
+}
