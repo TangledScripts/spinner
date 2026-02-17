@@ -1,0 +1,40 @@
+{
+  "files": {
+    "CLAUDE.md": {
+      "hash": "941a99aaba9b4c320f4f22905eb1d459cc2337ac2ce312cb057564dc676fa733",
+      "chunks": 10,
+      "last_embedded": "2026-02-17T22:02:35.133532+00:00"
+    },
+    "docs/setup-guide.md": {
+      "hash": "8dae33a459563b5fb95e116cbda9e47a609087c4443e3b4cb55de932d7ecd70d",
+      "chunks": 5,
+      "last_embedded": "2026-02-17T22:02:39.986505+00:00"
+    },
+    "DIARY.md": {
+      "hash": "8904d6a71747ae269295f652672796c4dc561a4d8cc172dd1c780fb6593bdf98",
+      "chunks": 2,
+      "last_embedded": "2026-02-17T22:03:52.112171+00:00"
+    },
+    "src/store.js": {
+      "hash": "6d9c952b14ece3205e94d13f79083c4eae2e8e2dee417a7b26e40cb46c7d10f9",
+      "chunks": 2,
+      "last_embedded": "2026-02-17T22:03:56.495908+00:00"
+    },
+    "src/spinner.js": {
+      "hash": "18231ec30f198caaa6842de31732c36bbfffbc4bc387b174490da9c52cdcf70f",
+      "chunks": 2,
+      "last_embedded": "2026-02-17T22:04:05.264945+00:00"
+    },
+    "src/colors.js": {
+      "hash": "d664d3a5794bb1215913b1b45c8c95a5e8b76c2862eb2e9bc1a83451f0073c29",
+      "chunks": 2,
+      "last_embedded": "2026-02-17T22:04:09.502754+00:00"
+    },
+    "src/style.css": {
+      "hash": "4854767b0b8f21d5c553b13dbe44b9a4fadab1476dd91c3868a9c15bb5a2ffc8",
+      "chunks": 2,
+      "last_embedded": "2026-02-17T22:04:23.586049+00:00"
+    }
+  },
+  "generated_at": null
+}

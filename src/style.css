@@ -57,6 +57,18 @@ body {
   box-shadow: 0 0 30px var(--spinner-color), inset 0 0 20px rgba(0, 0, 0, 0.3);
   transform-style: preserve-3d;
   transition: --spinner-color 0.4s ease;
+  cursor: pointer;
+}
+
+/* Copy feedback — bright glow burst */
+.circle.copied {
+  box-shadow: 0 0 70px var(--spinner-color), 0 0 30px white, inset 0 0 20px rgba(0, 0, 0, 0.3);
+  border-color: white;
+  transition: box-shadow 0.15s ease-out, border-color 0.15s ease-out, --spinner-color 0.4s ease;
+}
+
+.circle:not(.copied) {
+  transition: box-shadow 0.8s ease-out, border-color 0.8s ease-out, --spinner-color 0.4s ease;
 }
 
 /* Keyframe Animations */
@@ -185,6 +197,19 @@ body {
 /* Animation play state — paused preserves rotation angle */
 .circle.paused {
   animation-play-state: paused;
+}
+
+/* Copy hint */
+.copy-hint {
+  font-size: 0.7rem;
+  color: #555;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  transition: color 0.3s;
+}
+
+.copy-hint.active {
+  color: #aaa;
 }
 
 /* Keyboard hint */

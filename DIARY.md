@@ -36,3 +36,24 @@ A CSS 3D spinning circle controlled by directional buttons, with Zustand vanilla
 **Thought for tomorrow:** This thing is beautiful but does absolutely nothing useful. That's the point. What's the smallest seed of usefulness we can plant?
 
 ---
+
+## Day 2 — 2026-02-17
+
+**What we added:** Click-to-copy color code.
+
+The spinner cycles through beautiful colors but they vanished into the void. Now clicking the circle copies the current hex color to your clipboard. A bright glow flash confirms the copy, and a hint below the circle shows the copied value.
+
+- `copiedColor` + `copyCurrentColor()` + `clearCopied()` in store
+- Click handler on `.circle` with `navigator.clipboard.writeText()`
+- CSS glow burst on `.copied` class (bright box-shadow + white border, fades out)
+- "Click circle to copy color" hint text updates to "Copied #hex!" on copy
+- 6 new unit tests (copy guard, correct hex, shade cycling, all directions, clear, reset)
+- 4 new E2E tests (hint visible, no-op when stopped, feedback on copy, timeout clears)
+
+Also installed FORGE framework (brownfield) + GSD + RAG system. Project docs ingested into LanceDB (25 chunks). MCP memory entities created for cross-session recall.
+
+**Stats:** 31 unit + 24 E2E = 55 total tests. First useful output: the spinner produces something you can take with you.
+
+**Thought for tomorrow:** People clicking the circle to grab colors will naturally want to see what they've collected. A color history panel?
+
+---

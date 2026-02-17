@@ -44,6 +44,22 @@ export function initSpinner() {
     store.getState().setSpeed(parseFloat(e.target.value));
   });
 
+  // Wire click-to-copy on circle
+  const copyHint = document.getElementById('copy-hint');
+  let copyTimeout = null;
+
+  circle.addEventListener('click', async () => {
+    const hex = store.getState().copyCurrentColor();
+    if (!hex) return;
+    try {
+      await navigator.clipboard.writeText(hex);
+    } catch {
+      // Clipboard API may be blocked — still show visual feedback
+    }
+    if (copyTimeout) clearTimeout(copyTimeout);
+    copyTimeout = setTimeout(() => store.getState().clearCopied(), 1200);
+  });
+
   // Wire keyboard controls
   document.addEventListener('keydown', (e) => {
     if (KEY_MAP[e.key]) {
@@ -102,6 +118,18 @@ export function initSpinner() {
     hudColor.textContent = state.direction ? palette[state.colorFamily].name : '—';
     hudShade.textContent = state.direction ? `${state.shadeIndex + 1}/${palette[state.colorFamily].shades.length}` : '—';
     hudSpeed.textContent = `${state.speed.toFixed(1)}s`;
+  });
+
+  // Subscribe: copy feedback (separate concern)
+  store.subscribe((state, prevState) => {
+    if (state.copiedColor !== prevState.copiedColor) {
+      circle.classList.toggle('copied', !!state.copiedColor);
+      if (copyHint) {
+        copyHint.textContent = state.copiedColor
+          ? `Copied ${state.copiedColor}!`
+          : 'Click circle to copy color';
+      }
+    }
   });
 
   // Wire animationiteration for shade cycling

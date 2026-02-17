@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# RAG database (rebuilt locally)
+.rag/.lance/
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# FORGE temp
+.gitignore.forge
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

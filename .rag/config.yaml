@@ -1,0 +1,13 @@
+enabled: true
+embedding_model: nomic-embed-text
+top_k: 5
+auto_ingest: true
+meta_rag_sync: true
+chunk_strategy: semantic  # semantic | fixed | ast
+chunk_max_tokens: 500
+chunk_overlap_tokens: 50
+quality_gate:
+  min_tokens: 30
+  min_entropy: 3.0
+  min_lexical_diversity: 0.3
+status_filter: confirmed  # default retrieval filter

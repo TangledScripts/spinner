@@ -13,6 +13,7 @@ function makeStore() {
     colorFamily: 'up',
     shadeIndex: DEFAULT_SHADE,
     speed: DEFAULT_SPEED,
+    copiedColor: null,
 
     setDirection(dir) {
       set({
@@ -37,6 +38,18 @@ function makeStore() {
       set({ speed: Math.max(0.5, Math.min(5, speed)) });
     },
 
+    copyCurrentColor() {
+      const state = get();
+      if (!state.direction) return null;
+      const hex = palette[state.colorFamily].shades[state.shadeIndex];
+      set({ copiedColor: hex });
+      return hex;
+    },
+
+    clearCopied() {
+      set({ copiedColor: null });
+    },
+
     reset() {
       set({
         direction: null,
@@ -44,6 +57,7 @@ function makeStore() {
         colorFamily: 'up',
         shadeIndex: DEFAULT_SHADE,
         speed: DEFAULT_SPEED,
+        copiedColor: null,
       });
     },
   }));
@@ -58,6 +72,7 @@ describe('Store — initial state', () => {
     expect(state.colorFamily).toBe('up');
     expect(state.shadeIndex).toBe(DEFAULT_SHADE);
     expect(state.speed).toBe(DEFAULT_SPEED);
+    expect(state.copiedColor).toBe(null);
   });
 });
 
@@ -206,5 +221,60 @@ describe('Store — reset', () => {
     store.getState().reset();
     expect(store.getState().direction).toBe(null);
     expect(store.getState().isSpinning).toBe(false);
+  });
+
+  it('reset clears copiedColor', () => {
+    store.getState().setDirection('up');
+    store.getState().copyCurrentColor();
+    expect(store.getState().copiedColor).not.toBe(null);
+    store.getState().reset();
+    expect(store.getState().copiedColor).toBe(null);
+  });
+});
+
+describe('Store — copyCurrentColor', () => {
+  let store;
+  beforeEach(() => { store = makeStore(); });
+
+  it('returns null when no direction set', () => {
+    const result = store.getState().copyCurrentColor();
+    expect(result).toBe(null);
+    expect(store.getState().copiedColor).toBe(null);
+  });
+
+  it('returns the current hex color when spinning', () => {
+    store.getState().setDirection('up');
+    const result = store.getState().copyCurrentColor();
+    const expected = palette.up.shades[DEFAULT_SHADE];
+    expect(result).toBe(expected);
+    expect(store.getState().copiedColor).toBe(expected);
+  });
+
+  it('returns correct color after shade cycling', () => {
+    store.getState().setDirection('left');
+    store.getState().cycleShade();
+    const result = store.getState().copyCurrentColor();
+    expect(result).toBe(palette.left.shades[DEFAULT_SHADE + 1]);
+  });
+
+  it('returns correct color for each direction', () => {
+    for (const dir of ['up', 'down', 'left', 'right']) {
+      store.getState().setDirection(dir);
+      const result = store.getState().copyCurrentColor();
+      expect(result).toBe(palette[dir].shades[DEFAULT_SHADE]);
+    }
+  });
+});
+
+describe('Store — clearCopied', () => {
+  let store;
+  beforeEach(() => { store = makeStore(); });
+
+  it('clears copiedColor back to null', () => {
+    store.getState().setDirection('down');
+    store.getState().copyCurrentColor();
+    expect(store.getState().copiedColor).not.toBe(null);
+    store.getState().clearCopied();
+    expect(store.getState().copiedColor).toBe(null);
   });
 });

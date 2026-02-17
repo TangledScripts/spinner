@@ -10,6 +10,7 @@ export const store = createStore((set, get) => ({
   colorFamily: 'up',
   shadeIndex: DEFAULT_SHADE,
   speed: DEFAULT_SPEED,
+  copiedColor: null,
 
   setDirection(dir) {
     set({
@@ -34,6 +35,18 @@ export const store = createStore((set, get) => ({
     set({ speed: Math.max(0.5, Math.min(5, speed)) });
   },
 
+  copyCurrentColor() {
+    const state = get();
+    if (!state.direction) return null;
+    const hex = palette[state.colorFamily].shades[state.shadeIndex];
+    set({ copiedColor: hex });
+    return hex;
+  },
+
+  clearCopied() {
+    set({ copiedColor: null });
+  },
+
   reset() {
     set({
       direction: null,
@@ -41,6 +54,7 @@ export const store = createStore((set, get) => ({
       colorFamily: 'up',
       shadeIndex: DEFAULT_SHADE,
       speed: DEFAULT_SPEED,
+      copiedColor: null,
     });
   },
 }));

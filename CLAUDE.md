@@ -79,6 +79,10 @@ npx playwright test  # Run E2E tests
 - `animation-play-state` for stop/start (preserves rotation angle)
 - `perspective: 800px` + `transform-style: preserve-3d` on parent container
 
-## Future: RAG Integration
+## FORGE / GSD Framework
 
-A RAG system will be integrated when available. It will serve as an additional memory layer alongside DIARY.md — picking up from wherever we are at the time.
+FORGE is installed at `.claude/` with GSD workflows at `.claude/get-shit-done/`. The daily workflow uses brownfield mode — no re-initialization needed. GSD commands available via `.claude/commands/gsd/`.
+
+## RAG System
+
+LanceDB project RAG initialized at `.rag/.lance/`. Key docs are ingested (DIARY.md, CLAUDE.md, source files). MCP memory entities exist for cross-session recall (Spinner Project, Spinner Day 1, Spinner Architecture). RAG hooks are wired in `.claude/settings.json` for auto-ingestion on file edits.

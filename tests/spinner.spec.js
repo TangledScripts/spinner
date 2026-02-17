@@ -174,3 +174,40 @@ test.describe('Spinner — status HUD', () => {
     await expect(page.locator('#hud-direction')).toHaveText('—');
   });
 });
+
+test.describe('Spinner — click-to-copy color', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+  });
+
+  test('copy hint is visible on load', async ({ page }) => {
+    await expect(page.locator('#copy-hint')).toBeVisible();
+    await expect(page.locator('#copy-hint')).toHaveText('Click circle to copy color');
+  });
+
+  test('clicking circle while not spinning does nothing', async ({ page }) => {
+    await page.locator('.circle').click({ force: true });
+    await expect(page.locator('#copy-hint')).toHaveText('Click circle to copy color');
+    await expect(page.locator('.circle')).not.toHaveClass(/copied/);
+  });
+
+  test('clicking circle while spinning shows copied feedback', async ({ page }) => {
+    await page.click('[data-direction="up"]');
+    // Pause first so circle is stable, then click
+    await page.click('#stop-btn');
+    await page.locator('.circle').click({ force: true });
+    await expect(page.locator('.circle')).toHaveClass(/copied/);
+    await expect(page.locator('#copy-hint')).toContainText('Copied');
+  });
+
+  test('copied class is removed after timeout', async ({ page }) => {
+    await page.click('[data-direction="right"]');
+    await page.click('#stop-btn');
+    await page.locator('.circle').click({ force: true });
+    await expect(page.locator('.circle')).toHaveClass(/copied/);
+    // Wait for the 1200ms timeout + buffer
+    await page.waitForTimeout(1500);
+    await expect(page.locator('.circle')).not.toHaveClass(/copied/);
+    await expect(page.locator('#copy-hint')).toHaveText('Click circle to copy color');
+  });
+});
