@@ -1,4 +1,9 @@
-/* Register --spinner-color for smooth animated transitions */
+/** @feature shade-cycling — smooth color transitions
+ *  @day 1 @date 2026-02-17
+ *  @category visual/color
+ *  @desc Registers --spinner-color as a typed CSS property so the browser can interpolate between color values. Without this, custom property changes are instant (no transition). With it, shade changes animate smoothly over 0.4s.
+ *  @files style.css
+ */
 @property --spinner-color {
   syntax: '<color>';
   inherits: false;
@@ -34,7 +39,12 @@ body {
   max-width: 500px;
 }
 
-/* 3D Perspective Container */
+/** @feature 3d-scene
+ *  @day 1 @date 2026-02-17
+ *  @category visual/3d
+ *  @desc 3D perspective container with preserve-3d. perspective: 800px creates the depth illusion. The circle inside rotates on X or Y axis depending on direction. border-radius: 50% + radial-gradient + box-shadow create the glowing orb effect.
+ *  @files style.css, index.html
+ */
 .scene {
   perspective: 800px;
   transform-style: preserve-3d;
@@ -45,7 +55,6 @@ body {
   align-items: center;
 }
 
-/* The 3D Circle */
 .circle {
   --spinner-color: #42a5f5;
   --spin-duration: 2s;
@@ -60,7 +69,12 @@ body {
   cursor: pointer;
 }
 
-/* Copy feedback — bright glow burst */
+/** @feature copy-color — visual feedback
+ *  @day 2 @date 2026-02-17
+ *  @category interaction/utility
+ *  @desc Bright glow burst on copy: enlarged box-shadow with white halo + white border. Fast 0.15s ease-in on apply, slow 0.8s ease-out on remove creates a camera-flash effect. Uses CSS transitions, not keyframes, to avoid interfering with spin animations.
+ *  @files style.css
+ */
 .circle.copied {
   box-shadow: 0 0 70px var(--spinner-color), 0 0 30px white, inset 0 0 20px rgba(0, 0, 0, 0.3);
   border-color: white;
@@ -71,7 +85,12 @@ body {
   transition: box-shadow 0.8s ease-out, border-color 0.8s ease-out, --spinner-color 0.4s ease;
 }
 
-/* Keyframe Animations */
+/** @feature directional-spin — keyframe animations
+ *  @day 1 @date 2026-02-17
+ *  @category animation/core
+ *  @desc Four CSS keyframes for 360° rotation: spin-up/down on rotateX, spin-left/right on rotateY. Duration controlled by --spin-duration custom property. Linear timing + infinite iteration. animationiteration event fires shade cycling.
+ *  @files style.css
+ */
 @keyframes spin-up {
   from { transform: rotateX(0deg); }
   to { transform: rotateX(360deg); }
@@ -92,13 +111,16 @@ body {
   to { transform: rotateY(360deg); }
 }
 
-/* Animation Classes — use --spin-duration for speed control */
 .spin-up { animation: spin-up var(--spin-duration) linear infinite; }
 .spin-down { animation: spin-down var(--spin-duration) linear infinite; }
 .spin-left { animation: spin-left var(--spin-duration) linear infinite; }
 .spin-right { animation: spin-right var(--spin-duration) linear infinite; }
 
-/* Controls — cross pattern */
+/** @feature directional-spin — button layout
+ *  @category layout/controls
+ *  @desc Cross-pattern grid layout for directional buttons: up top-center, left/right middle sides, down bottom-center. Uses named grid areas for clarity.
+ *  @files style.css, index.html
+ */
 .controls {
   display: grid;
   grid-template-areas:
@@ -155,6 +177,11 @@ body {
   align-items: center;
 }
 
+/** @feature speed-control — slider UI
+ *  @category animation/control
+ *  @desc Range slider with accent-color matching theme. Label above, slider centered. Width 200px desktop, 160px mobile.
+ *  @files style.css, index.html
+ */
 .speed-control {
   display: flex;
   flex-direction: column;
@@ -174,7 +201,12 @@ body {
   cursor: pointer;
 }
 
-/* Status HUD */
+/** @feature status-hud — display styling
+ *  @day 1 @date 2026-02-17
+ *  @category display/info
+ *  @desc Horizontal flex row of label/value pairs in monospace. Muted colors (labels #555, values #aaa). Wraps on mobile. Labels uppercase, small font-size.
+ *  @files style.css, index.html
+ */
 .status-hud {
   display: flex;
   gap: 1.5rem;
@@ -194,12 +226,20 @@ body {
   color: #aaa;
 }
 
-/* Animation play state — paused preserves rotation angle */
+/** @feature stop-start — paused state
+ *  @category animation/control
+ *  @desc animation-play-state: paused preserves the current rotation angle. When .paused is removed, animation resumes from exact position.
+ *  @files style.css
+ */
 .circle.paused {
   animation-play-state: paused;
 }
 
-/* Copy hint */
+/** @feature copy-color — hint text
+ *  @category interaction/utility
+ *  @desc Small monospace text below circle. Shows "Click circle to copy color" by default, changes to "Copied #hex!" on copy. Color transitions for subtle feedback.
+ *  @files style.css, index.html
+ */
 .copy-hint {
   font-size: 0.7rem;
   color: #555;
@@ -212,7 +252,11 @@ body {
   color: #aaa;
 }
 
-/* Keyboard hint */
+/** @feature keyboard-controls — hint display
+ *  @category interaction/input
+ *  @desc Keyboard shortcut hints at bottom. kbd elements styled as key caps. Hidden on mobile (< 600px).
+ *  @files style.css, index.html
+ */
 .keyboard-hint {
   font-size: 0.7rem;
   color: #444;
@@ -228,7 +272,12 @@ body {
   font-family: inherit;
 }
 
-/* Accessibility — respect reduced motion preference */
+/** @feature reduced-motion
+ *  @day 1 @date 2026-02-17
+ *  @category accessibility
+ *  @desc Respects prefers-reduced-motion: disables all spin animations for users who've configured reduced motion in their OS. The circle still changes colors and responds to controls, just doesn't rotate.
+ *  @files style.css
+ */
 @media (prefers-reduced-motion: reduce) {
   .spin-up,
   .spin-down,
@@ -238,7 +287,12 @@ body {
   }
 }
 
-/* Mobile responsive */
+/** @feature responsive-layout
+ *  @day 1 @date 2026-02-17
+ *  @category layout/responsive
+ *  @desc Mobile breakpoint at 600px: smaller scene (220px) and circle (180px), narrower grid, smaller buttons, wrapped HUD, hidden keyboard hints. Speed slider narrower (160px).
+ *  @files style.css
+ */
 @media (max-width: 600px) {
   .scene {
     width: 220px;

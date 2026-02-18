@@ -1,0 +1,362 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-02-18",
+  "featureCount": 12,
+  "locationCount": 32,
+  "features": {
+    "color-families": {
+      "name": "color-families",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "visual/color",
+      "description": "4 color palettes keyed by direction: blue (up), green (down), orange (left), purple (right). Each has 6 hex shades from lightest to darkest. Pure data module — no imports, no side effects, no DOM. Used by shade-cycling and copy-color features. @files colors.js, store.js, spinner.js",
+      "files": [
+        "colors.js",
+        "store.js",
+        "spinner.js"
+      ],
+      "locations": [
+        {
+          "file": "src/colors.js",
+          "line": 1,
+          "aspect": "primary"
+        }
+      ]
+    },
+    "keyboard-controls": {
+      "name": "keyboard-controls",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "interaction/input",
+      "description": "Arrow keys set direction, Space toggles stop/start, Escape resets. Keydown listener on document with preventDefault to block scroll. KEY_MAP translates ArrowUp/Down/Left/Right to direction strings. @files spinner.js, store.js",
+      "files": [
+        "spinner.js",
+        "store.js",
+        "src/style.css"
+      ],
+      "locations": [
+        {
+          "file": "src/spinner.js",
+          "line": 6,
+          "aspect": "primary"
+        },
+        {
+          "file": "src/spinner.js",
+          "line": 77,
+          "aspect": "DOM wiring"
+        },
+        {
+          "file": "src/style.css",
+          "line": 255,
+          "aspect": "hint display"
+        }
+      ]
+    },
+    "directional-spin": {
+      "name": "directional-spin",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "animation/control",
+      "description": "Button click handlers call store.setDirection(). Subscribe callback adds/removes spin-* CSS class and toggles .active on the clicked button.",
+      "files": [
+        "src/spinner.js",
+        "src/store.js",
+        "src/style.css"
+      ],
+      "locations": [
+        {
+          "file": "src/spinner.js",
+          "line": 30,
+          "aspect": "DOM wiring"
+        },
+        {
+          "file": "src/spinner.js",
+          "line": 94,
+          "aspect": "subscribe: animation class + play state"
+        },
+        {
+          "file": "src/store.js",
+          "line": 8,
+          "aspect": "primary"
+        },
+        {
+          "file": "src/style.css",
+          "line": 88,
+          "aspect": "keyframe animations"
+        },
+        {
+          "file": "src/style.css",
+          "line": 119,
+          "aspect": "button layout"
+        }
+      ]
+    },
+    "stop-start": {
+      "name": "stop-start",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "animation/control",
+      "description": "Stop button pauses if spinning. Start button resumes if paused and direction exists. Subscribe callback toggles .paused class.",
+      "files": [
+        "src/spinner.js",
+        "src/store.js",
+        "src/style.css"
+      ],
+      "locations": [
+        {
+          "file": "src/spinner.js",
+          "line": 39,
+          "aspect": "DOM wiring"
+        },
+        {
+          "file": "src/spinner.js",
+          "line": 109,
+          "aspect": "subscribe: play state"
+        },
+        {
+          "file": "src/store.js",
+          "line": 28,
+          "aspect": "primary"
+        },
+        {
+          "file": "src/style.css",
+          "line": 229,
+          "aspect": "paused state"
+        }
+      ]
+    },
+    "speed-control": {
+      "name": "speed-control",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "animation/control",
+      "description": "Range input (0.5–5) calls store.setSpeed(). Subscribe callback updates --spin-duration CSS property and syncs slider value.",
+      "files": [
+        "src/spinner.js",
+        "src/store.js",
+        "src/style.css"
+      ],
+      "locations": [
+        {
+          "file": "src/spinner.js",
+          "line": 52,
+          "aspect": "DOM wiring"
+        },
+        {
+          "file": "src/spinner.js",
+          "line": 114,
+          "aspect": "subscribe: duration update"
+        },
+        {
+          "file": "src/store.js",
+          "line": 50,
+          "aspect": "primary"
+        },
+        {
+          "file": "src/style.css",
+          "line": 180,
+          "aspect": "slider UI"
+        }
+      ]
+    },
+    "copy-color": {
+      "name": "copy-color",
+      "day": 2,
+      "date": "2026-02-17",
+      "category": "interaction/utility",
+      "description": "Click handler on .circle calls store.copyCurrentColor(), writes hex to clipboard via navigator.clipboard.writeText(). 1200ms timeout clears feedback. Subscribe callback toggles .copied class and updates hint text.",
+      "files": [
+        "src/spinner.js",
+        "src/store.js",
+        "src/style.css"
+      ],
+      "locations": [
+        {
+          "file": "src/spinner.js",
+          "line": 59,
+          "aspect": "DOM wiring"
+        },
+        {
+          "file": "src/spinner.js",
+          "line": 147,
+          "aspect": "subscribe: visual feedback"
+        },
+        {
+          "file": "src/store.js",
+          "line": 62,
+          "aspect": "primary"
+        },
+        {
+          "file": "src/style.css",
+          "line": 72,
+          "aspect": "visual feedback"
+        },
+        {
+          "file": "src/style.css",
+          "line": 238,
+          "aspect": "hint text"
+        }
+      ]
+    },
+    "shade-cycling": {
+      "name": "shade-cycling",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "visual/color",
+      "description": "Updates --spinner-color CSS property when colorFamily or shadeIndex changes. The @property registration in CSS enables smooth animated transitions between shade values.",
+      "files": [
+        "src/spinner.js",
+        "src/store.js",
+        "src/style.css"
+      ],
+      "locations": [
+        {
+          "file": "src/spinner.js",
+          "line": 121,
+          "aspect": "subscribe: color updates"
+        },
+        {
+          "file": "src/spinner.js",
+          "line": 159,
+          "aspect": "animationiteration trigger"
+        },
+        {
+          "file": "src/store.js",
+          "line": 38,
+          "aspect": "primary"
+        },
+        {
+          "file": "src/style.css",
+          "line": 1,
+          "aspect": "smooth color transitions"
+        }
+      ]
+    },
+    "status-hud": {
+      "name": "status-hud",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "display/info",
+      "description": "Live status display showing current direction, color family name, shade position (N/total), and speed. Updates on every state change. Monospace font, muted colors. @files spinner.js, style.css, index.html",
+      "files": [
+        "spinner.js",
+        "style.css",
+        "index.html"
+      ],
+      "locations": [
+        {
+          "file": "src/spinner.js",
+          "line": 134,
+          "aspect": "primary"
+        },
+        {
+          "file": "src/style.css",
+          "line": 204,
+          "aspect": "display styling"
+        }
+      ]
+    },
+    "reset": {
+      "name": "reset",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "state/management",
+      "description": "Restores all state to initial defaults. Clears direction, stops spinning, resets color family, shade, speed, and copied color. Triggered by Escape key. @files store.js, spinner.js",
+      "files": [
+        "store.js",
+        "spinner.js"
+      ],
+      "locations": [
+        {
+          "file": "src/store.js",
+          "line": 82,
+          "aspect": "primary"
+        }
+      ]
+    },
+    "3d-scene": {
+      "name": "3d-scene",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "visual/3d",
+      "description": "3D perspective container with preserve-3d. perspective: 800px creates the depth illusion. The circle inside rotates on X or Y axis depending on direction. border-radius: 50% + radial-gradient + box-shadow create the glowing orb effect. @files style.css, index.html",
+      "files": [
+        "style.css",
+        "index.html"
+      ],
+      "locations": [
+        {
+          "file": "src/style.css",
+          "line": 42,
+          "aspect": "primary"
+        }
+      ]
+    },
+    "reduced-motion": {
+      "name": "reduced-motion",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "accessibility",
+      "description": "Respects prefers-reduced-motion: disables all spin animations for users who've configured reduced motion in their OS. The circle still changes colors and responds to controls, just doesn't rotate. @files style.css",
+      "files": [
+        "style.css"
+      ],
+      "locations": [
+        {
+          "file": "src/style.css",
+          "line": 275,
+          "aspect": "primary"
+        }
+      ]
+    },
+    "responsive-layout": {
+      "name": "responsive-layout",
+      "day": 1,
+      "date": "2026-02-17",
+      "category": "layout/responsive",
+      "description": "Mobile breakpoint at 600px: smaller scene (220px) and circle (180px), narrower grid, smaller buttons, wrapped HUD, hidden keyboard hints. Speed slider narrower (160px). @files style.css",
+      "files": [
+        "style.css"
+      ],
+      "locations": [
+        {
+          "file": "src/style.css",
+          "line": 290,
+          "aspect": "primary"
+        }
+      ]
+    }
+  },
+  "categories": {
+    "visual/color": [
+      "color-families",
+      "shade-cycling"
+    ],
+    "interaction/input": [
+      "keyboard-controls"
+    ],
+    "animation/control": [
+      "directional-spin",
+      "stop-start",
+      "speed-control"
+    ],
+    "interaction/utility": [
+      "copy-color"
+    ],
+    "display/info": [
+      "status-hud"
+    ],
+    "state/management": [
+      "reset"
+    ],
+    "visual/3d": [
+      "3d-scene"
+    ],
+    "accessibility": [
+      "reduced-motion"
+    ],
+    "layout/responsive": [
+      "responsive-layout"
+    ]
+  }
+}

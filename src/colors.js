@@ -1,7 +1,8 @@
-/**
- * Color palette data — 4 families keyed by direction.
- * Each family has a name and an array of hex shades (light to dark).
- * Pure data module: no imports, no side effects, no DOM.
+/** @feature color-families
+ *  @day 1 @date 2026-02-17
+ *  @category visual/color
+ *  @desc 4 color palettes keyed by direction: blue (up), green (down), orange (left), purple (right). Each has 6 hex shades from lightest to darkest. Pure data module — no imports, no side effects, no DOM. Used by shade-cycling and copy-color features.
+ *  @files colors.js, store.js, spinner.js
  */
 export const palette = {
   up: {

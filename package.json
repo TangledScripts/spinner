@@ -7,7 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "register": "node scripts/register-features.js",
+    "features:list": "node scripts/feature-finder.js --list",
+    "features:search": "node scripts/feature-finder.js --search",
+    "features:category": "node scripts/feature-finder.js --category",
+    "features:day": "node scripts/feature-finder.js --day",
+    "features:detail": "node scripts/feature-finder.js --detail",
+    "features:categories": "node scripts/feature-finder.js --categories"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",

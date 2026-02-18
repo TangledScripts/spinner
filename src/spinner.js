@@ -3,6 +3,12 @@ import { palette } from './colors.js';
 
 const SPIN_CLASSES = ['spin-up', 'spin-down', 'spin-left', 'spin-right'];
 
+/** @feature keyboard-controls
+ *  @day 1 @date 2026-02-17
+ *  @category interaction/input
+ *  @desc Arrow keys set direction, Space toggles stop/start, Escape resets. Keydown listener on document with preventDefault to block scroll. KEY_MAP translates ArrowUp/Down/Left/Right to direction strings.
+ *  @files spinner.js, store.js
+ */
 const KEY_MAP = {
   ArrowUp: 'up',
   ArrowDown: 'down',
@@ -21,14 +27,18 @@ export function initSpinner() {
   const hudShade = document.getElementById('hud-shade');
   const hudSpeed = document.getElementById('hud-speed');
 
-  // Wire direction button click handlers
+  /** @feature directional-spin — DOM wiring
+   *  @desc Button click handlers call store.setDirection(). Subscribe callback adds/removes spin-* CSS class and toggles .active on the clicked button.
+   */
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
       store.getState().setDirection(btn.dataset.direction);
     });
   });
 
-  // Wire stop/start buttons
+  /** @feature stop-start — DOM wiring
+   *  @desc Stop button pauses if spinning. Start button resumes if paused and direction exists. Subscribe callback toggles .paused class.
+   */
   stopBtn.addEventListener('click', () => {
     const state = store.getState();
     if (state.isSpinning) state.toggleSpinning();
@@ -39,12 +49,16 @@ export function initSpinner() {
     if (!state.isSpinning && state.direction) state.toggleSpinning();
   });
 
-  // Wire speed slider
+  /** @feature speed-control — DOM wiring
+   *  @desc Range input (0.5–5) calls store.setSpeed(). Subscribe callback updates --spin-duration CSS property and syncs slider value.
+   */
   speedSlider.addEventListener('input', (e) => {
     store.getState().setSpeed(parseFloat(e.target.value));
   });
 
-  // Wire click-to-copy on circle
+  /** @feature copy-color — DOM wiring
+   *  @desc Click handler on .circle calls store.copyCurrentColor(), writes hex to clipboard via navigator.clipboard.writeText(). 1200ms timeout clears feedback. Subscribe callback toggles .copied class and updates hint text.
+   */
   const copyHint = document.getElementById('copy-hint');
   let copyTimeout = null;
 
@@ -60,7 +74,9 @@ export function initSpinner() {
     copyTimeout = setTimeout(() => store.getState().clearCopied(), 1200);
   });
 
-  // Wire keyboard controls
+  /** @feature keyboard-controls — DOM wiring
+   *  @desc Keydown listener dispatches to store actions based on KEY_MAP. Space toggles only if direction exists. Escape calls reset().
+   */
   document.addEventListener('keydown', (e) => {
     if (KEY_MAP[e.key]) {
       e.preventDefault();
@@ -75,9 +91,10 @@ export function initSpinner() {
     }
   });
 
-  // Subscribe: animation class + play state updates
+  /** @feature directional-spin — subscribe: animation class + play state
+   *  @desc Removes all spin-* classes, adds spin-{direction}. Toggles .active on matching button. Also handles play state (.paused class) and speed (--spin-duration property).
+   */
   store.subscribe((state, prevState) => {
-    // Handle direction changes
     if (state.direction !== prevState.direction) {
       circle.classList.remove(...SPIN_CLASSES);
       if (state.direction) {
@@ -89,19 +106,21 @@ export function initSpinner() {
       });
     }
 
-    // Handle play state changes
+    /** @feature stop-start — subscribe: play state */
     if (state.isSpinning !== prevState.isSpinning) {
       circle.classList.toggle('paused', !state.isSpinning);
     }
 
-    // Handle speed changes
+    /** @feature speed-control — subscribe: duration update */
     if (state.speed !== prevState.speed) {
       circle.style.setProperty('--spin-duration', `${state.speed}s`);
       speedSlider.value = state.speed;
     }
   });
 
-  // Subscribe: color updates (separate concern)
+  /** @feature shade-cycling — subscribe: color updates
+   *  @desc Updates --spinner-color CSS property when colorFamily or shadeIndex changes. The @property registration in CSS enables smooth animated transitions between shade values.
+   */
   store.subscribe((state, prevState) => {
     if (
       state.colorFamily === prevState.colorFamily &&
@@ -112,7 +131,12 @@ export function initSpinner() {
     circle.style.setProperty('--spinner-color', shade);
   });
 
-  // Subscribe: HUD updates (separate concern)
+  /** @feature status-hud
+   *  @day 1 @date 2026-02-17
+   *  @category display/info
+   *  @desc Live status display showing current direction, color family name, shade position (N/total), and speed. Updates on every state change. Monospace font, muted colors.
+   *  @files spinner.js, style.css, index.html
+   */
   store.subscribe((state) => {
     hudDirection.textContent = state.direction ?? '—';
     hudColor.textContent = state.direction ? palette[state.colorFamily].name : '—';
@@ -120,7 +144,7 @@ export function initSpinner() {
     hudSpeed.textContent = `${state.speed.toFixed(1)}s`;
   });
 
-  // Subscribe: copy feedback (separate concern)
+  /** @feature copy-color — subscribe: visual feedback */
   store.subscribe((state, prevState) => {
     if (state.copiedColor !== prevState.copiedColor) {
       circle.classList.toggle('copied', !!state.copiedColor);
@@ -132,7 +156,9 @@ export function initSpinner() {
     }
   });
 
-  // Wire animationiteration for shade cycling
+  /** @feature shade-cycling — animationiteration trigger
+   *  @desc Fires cycleShade() on each full rotation, progressing through the color family's shade array.
+   */
   circle.addEventListener('animationiteration', () => {
     store.getState().cycleShade();
   });
